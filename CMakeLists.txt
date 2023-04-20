@@ -7,6 +7,9 @@ add_executable(simple_threads simple_threads.c)
 add_executable(thread_queue thread_queue.c matrix.c)
 add_executable(opencl opencl.c matrix.c)
 
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 target_link_libraries(opencl OpenCL)
 target_link_libraries(opencl m)

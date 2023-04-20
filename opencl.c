@@ -1,7 +1,7 @@
 #include "CL/cl.h"
 #include "matrix.h"
 #include <stdio.h>
-#include <time.h>
+#include <sys/time.h>
 
 #define MAX_SOURCE_SIZE 4096
 
@@ -15,13 +15,10 @@ void flatten_matrix(matrix_t* matrix, cl_float* buffer){
 }
 
 int main(){
-    matrix_t a = init_matrix(1000, 1000);
-    matrix_t b = init_matrix(1000, 1000);
+    matrix_t a = init_matrix(200, 200);
+    matrix_t b = init_matrix(200, 200);
     fill_matrix(&a);
     fill_matrix(&b);
-
-    clock_t begin;
-    clock_t end;
 
     cl_platform_id platform_id;
     cl_uint ret_num_platforms;
@@ -61,7 +58,9 @@ int main(){
 /* скомпилировать программу */
     ret = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);
 
-    begin = clock();
+    struct timeval begin;
+    struct timeval end;
+    gettimeofday(&begin, NULL);
 
 /* создать кернел */
     kernel = clCreateKernel(program, "test", &ret);
@@ -109,10 +108,10 @@ int main(){
         }
     }
 
-    end = clock();
+    gettimeofday(&end, NULL);
 
     //print_matrix(&c);
-    printf("Execution time: %f\n", (double) (end - begin));
+    printf("Execution time: %f\n", (double) (end.tv_sec + (end.tv_usec * 1e-6) - begin.tv_sec - (begin.tv_usec * 1e-6)));
 
     delete_matrix(&a);
     delete_matrix(&b);

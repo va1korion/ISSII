@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <time.h>
 #include <pthread.h>
+#include <sys/time.h>
 
-#define size_n 1000
-#define size_m 1000
+#define size_n 200
+#define size_m 200
 
 int matrix_a[size_n][size_m];
 int matrix_b[size_n][size_m];
@@ -43,19 +44,22 @@ int main(){
     pthread_t threads[size_n];
     fill_matrix(matrix_a);
     fill_matrix(matrix_b);
-    clock_t begin = clock();
+    struct timeval begin;
+    struct timeval end;
+    gettimeofday(&begin, NULL);
     for (int i=0; i<size_n; i++){
         pthread_create(&threads[i], NULL, multiply_row, NULL);
     }
     for (int i=0; i<size_n; i++){
         pthread_join(threads[i], NULL);
     }
-    clock_t end = clock();
-    double exec_time = (double) (end - begin);
-    // print_matrix(matrix_c);
-    printf("Multi-thread xecution time: %f\n", exec_time);
+    gettimeofday(&end, NULL);
 
-    begin = clock();
+    double exec_time = (double) (end.tv_sec + (end.tv_usec * 1e-6) - begin.tv_sec - (begin.tv_usec * 1e-6));
+    // print_matrix(matrix_c);
+    printf("Multi-thread execution time: %f\n", exec_time);
+
+    gettimeofday(&begin, NULL);
     for (int i=0; i<size_n; i++){
         for (int j=0; j<size_m; j++){
             for (int k=0; k<size_m; k++){
@@ -63,10 +67,11 @@ int main(){
             }
         }
     }
-    end = clock();
+    gettimeofday(&end, NULL);
 
     // print_matrix(matrix_d);
-    exec_time = (double) (end - begin);
+    exec_time = (double) (end.tv_sec + (end.tv_usec * 1e-6) - begin.tv_sec - (begin.tv_usec * 1e-6));
+
     printf("Single thread execution time: %f\n", exec_time);
 }
 

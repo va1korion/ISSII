@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <time.h>
+#include <sys/time.h>
 #include <pthread.h>
 #include <malloc.h>
 
@@ -119,30 +119,30 @@ matrix_t multiply_matrices_multiple_threads(const matrix_t* a, const matrix_t* b
 
 int main(){
     // init matrices
-    matrix_t a = init_matrix(1000, 1000);
-    matrix_t b = init_matrix(1000, 1000);
+    matrix_t a = init_matrix(200, 200);
+    matrix_t b = init_matrix(200, 200);
     fill_matrix(&a);
     fill_matrix(&b);
 
-    clock_t begin;
-    clock_t end;
+    struct timeval begin;
+    struct timeval end;
+    gettimeofday(&begin, NULL);
 
-    // умножаем одним потоком
-
-    begin = clock();
     matrix_t c = multiply_matrices_single_thread(&a, &b);
-    end = clock();
+    gettimeofday(&end, NULL);
+
     // print_matrix(&c);
-    printf("Single threadExecution time: %f\n", (double) (end - begin));
+    printf("Single threadExecution time: %f\n", (double) (end.tv_sec + (end.tv_usec * 1e-6) - begin.tv_sec - (begin.tv_usec * 1e-6)));
 
     // умножаем несколькими потоками (поставил 20 по количеству своих ядер)
-    int num_threads = 6;
+    int num_threads = 12;
     printf("%i threads\n", num_threads);
-    begin = clock();
+    gettimeofday(&begin, NULL);
     matrix_t d = multiply_matrices_multiple_threads(&a, &b, num_threads);
-    end = clock();
+    gettimeofday(&end, NULL);
+
     // print_matrix(&d);
-    printf("Thread pool execution time: %f\n", (double) (end - begin));
+    printf("Thread pool execution time: %f\n", (double) (end.tv_sec + (end.tv_usec * 1e-6) - begin.tv_sec - (begin.tv_usec * 1e-6)));
 
     // освобождаем память
     delete_matrix(&a);
