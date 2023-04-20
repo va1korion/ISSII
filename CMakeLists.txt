@@ -7,8 +7,12 @@ add_executable(simple_threads simple_threads.c)
 add_executable(thread_queue thread_queue.c matrix.c)
 add_executable(opencl opencl.c matrix.c)
 
-include_directories("C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.1\\include")
-target_link_libraries(opencl "C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.1\\lib\\x64\\OpenCL.lib")
+
+target_link_libraries(opencl OpenCL)
+target_link_libraries(opencl m)
+target_link_libraries(thread_queue m)
+
+
 add_custom_command(
         TARGET opencl POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy

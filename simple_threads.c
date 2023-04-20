@@ -2,8 +2,8 @@
 #include <time.h>
 #include <pthread.h>
 
-#define size_n 5
-#define size_m 5
+#define size_n 1000
+#define size_m 1000
 
 int matrix_a[size_n][size_m];
 int matrix_b[size_n][size_m];
@@ -53,7 +53,7 @@ int main(){
     clock_t end = clock();
     double exec_time = (double) (end - begin);
     // print_matrix(matrix_c);
-    printf("Execution time: %f\n", exec_time);
+    printf("Multi-thread xecution time: %f\n", exec_time);
 
     begin = clock();
     for (int i=0; i<size_n; i++){
@@ -67,7 +67,7 @@ int main(){
 
     // print_matrix(matrix_d);
     exec_time = (double) (end - begin);
-    printf("Execution time: %f\n", exec_time);
+    printf("Single thread execution time: %f\n", exec_time);
 }
 
 

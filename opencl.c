@@ -15,8 +15,8 @@ void flatten_matrix(matrix_t* matrix, cl_float* buffer){
 }
 
 int main(){
-    matrix_t a = init_matrix(5, 8);
-    matrix_t b = init_matrix(8, 5);
+    matrix_t a = init_matrix(1000, 1000);
+    matrix_t b = init_matrix(1000, 1000);
     fill_matrix(&a);
     fill_matrix(&b);
 
@@ -111,7 +111,7 @@ int main(){
 
     end = clock();
 
-    print_matrix(&c);
+    //print_matrix(&c);
     printf("Execution time: %f\n", (double) (end - begin));
 
     delete_matrix(&a);

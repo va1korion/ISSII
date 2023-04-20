@@ -119,8 +119,8 @@ matrix_t multiply_matrices_multiple_threads(const matrix_t* a, const matrix_t* b
 
 int main(){
     // init matrices
-    matrix_t a = init_matrix(5, 8);
-    matrix_t b = init_matrix(8, 5);
+    matrix_t a = init_matrix(1000, 1000);
+    matrix_t b = init_matrix(1000, 1000);
     fill_matrix(&a);
     fill_matrix(&b);
 
@@ -128,21 +128,21 @@ int main(){
     clock_t end;
 
     // умножаем одним потоком
-    printf("Single thread\n");
+
     begin = clock();
     matrix_t c = multiply_matrices_single_thread(&a, &b);
     end = clock();
-    print_matrix(&c);
-    printf("Execution time: %f\n", (double) (end - begin));
+    // print_matrix(&c);
+    printf("Single threadExecution time: %f\n", (double) (end - begin));
 
     // умножаем несколькими потоками (поставил 20 по количеству своих ядер)
-    int num_threads = 20;
+    int num_threads = 6;
     printf("%i threads\n", num_threads);
     begin = clock();
     matrix_t d = multiply_matrices_multiple_threads(&a, &b, num_threads);
     end = clock();
-    print_matrix(&d);
-    printf("Execution time: %f\n", (double) (end - begin));
+    // print_matrix(&d);
+    printf("Thread pool execution time: %f\n", (double) (end - begin));
 
     // освобождаем память
     delete_matrix(&a);
